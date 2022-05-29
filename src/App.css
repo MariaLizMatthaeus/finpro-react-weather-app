@@ -1,0 +1,46 @@
+.App {
+  font-family: sans-serif;
+  margin: 100 100 100 100;
+}
+h1 {
+  color: #212121;
+  display: block;
+  font-size: 26px;
+  font-weight: 400;
+  line-height: 26px;
+  margin-bottom: 0;
+}
+body {
+  font-family: "Fira Sans", sans-serif;
+  text-align: center;
+  background-color: #3b4346;
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 100vw;
+  height: 100vh;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 30px;
+}
+hr {
+  color: #fafafa;
+}
+i {
+  color: #fafafa;
+}
+
+li:first-letter {
+  text-transform: capitalize;
+}
