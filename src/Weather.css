@@ -14,30 +14,23 @@
   background: rgb(154, 160, 166, 0.9);
 }
 
-.Weather .weather-forecast {
-  border-radius: 5px;
-  background: rgb(218, 216, 227, 0.4);
-  margin-top: 0;
-}
-.Weather .overview {
+.Weather .WeatherInfo {
   margin-bottom: 20px;
 }
-.Weather .weather-temperature img {
-  margin-right: 5px;
-  height: 64px;
-  width: 64px;
+.Weather canvas {
+  margin: 10px auto;
 }
-.Weather .weather-temperature strong {
+.Weather .temperature {
   color: #212121;
-  font-size: 48px;
+  font-size: 40px;
   font-weight: 400;
   line-height: 1;
 }
 
-.Weather .weather-temperature .units {
+.Weather .unit {
   position: relative;
-  font-size: 16px;
-  top: -23px;
+  font-size: 20px;
+  top: -19px;
 }
 .Weather .weather-temperature .active {
   color: #212121;
