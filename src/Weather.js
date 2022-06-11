@@ -4,6 +4,7 @@ import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { solid } from "@fortawesome/fontawesome-svg-core/import.macro";
 import WeatherInformation from "./WeatherInformation";
+import { SpinnerCircular } from "spinners-react";
 
 export default function Weather(props) {
   let [weatherData, setWeatherData] = useState({ ready: false });
@@ -92,6 +93,6 @@ export default function Weather(props) {
     );
   } else {
     search();
-    return "Loading ...";
+    return <SpinnerCircular color="white" thickness="100" />;
   }
 }
