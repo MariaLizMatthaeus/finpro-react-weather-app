@@ -1,68 +1,97 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Weather.css";
-import Search from "./Search";
+import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { solid } from "@fortawesome/fontawesome-svg-core/import.macro";
+import WeatherInformation from "./WeatherInformation";
 
-export default function Weather() {
-  let weatherData = {
-    city: "Berlin",
-    temperature: 19,
-    date: "Saturday 17:48",
-    description: "Clear sky",
-    imgUrl: "https://openweathermap.org/img/wn/01d@2x.png",
-    humidity: 41,
-    wind: 7,
-  };
+export default function Weather(props) {
+  let [weatherData, setWeatherData] = useState({ ready: false });
+  let [city, setCity] = useState(props.defaultCity);
 
-  return (
-    <div className="container">
-      <div className="weather-wrapper">
-        <div className="Weather">
-          <Search />
-          <div className="overview">
-            <h1>{weatherData.city}</h1>
-            <ul>
-              <li>
-                Last updated: <span>{weatherData.date}</span>
-              </li>
-              <li>{weatherData.description}</li>
-            </ul>
-          </div>
-          <div className="row">
-            <div className="col-6">
-              <div className="clearfix weather-temperature">
-                <img
-                  src={weatherData.imgUrl}
-                  alt="sunny"
-                  className="float-left"
-                />
-                <span className="float-left">
-                  <strong>{weatherData.temperature} </strong>
-                  <span className="units">
-                    <a href="/" className="active">
-                      °C
-                    </a>{" "}
-                    |
-                    <a href="/" className="inactive">
-                      °F
-                    </a>
+  function handleResponse(response) {
+    setWeatherData({
+      ready: true,
+      coordinates: response.data.coord,
+      temperature: response.data.main.temp,
+      humidity: response.data.main.humidity,
+      description: response.data.weather[0].description,
+      icon: response.data.weather[0].icon,
+      wind: response.data.wind.speed,
+      city: response.data.name,
+      date: new Date(response.data.dt * 1000),
+    });
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    search();
+  }
+
+  function handleCityChange(event) {
+    setCity(event.target.value);
+  }
+
+  function search() {
+    let apiKey = "42b8ba4c0d3eac619d09938449fa1571";
+    let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+
+    axios.get(apiUrl).then(handleResponse);
+  }
+
+  if (weatherData.ready) {
+    return (
+      <div className="container">
+        <div className="weather-wrapper">
+          <div className="Weather">
+            <form className="mb-3" onSubmit={handleSubmit}>
+              <div className="row">
+                <div className="input-group col-3">
+                  <input
+                    type="search"
+                    placeholder="Search for a city ..."
+                    className="form-control border-end-0 border"
+                    autoComplete="off"
+                    autoFocus="on"
+                    onChange={handleCityChange}
+                  />
+                  <span className="input-group-append">
+                    <button
+                      className="btn btn-large"
+                      type="submit"
+                      value={search}
+                    >
+                      <FontAwesomeIcon
+                        icon={solid("search")}
+                        inverse
+                        size="2x"
+                      />
+                    </button>
                   </span>
-                </span>
+                  <div className="col-2">
+                    <button
+                      type="button"
+                      className="btn current-location"
+                      id="current-button"
+                    >
+                      <FontAwesomeIcon
+                        icon={solid("map-marked")}
+                        inverse
+                        size="2x"
+                      />
+                    </button>
+                  </div>
+                </div>
               </div>
-            </div>
-            <div className="col-6">
-              <ul>
-                <li>
-                  Humidity: <span>{weatherData.humidity}</span> %
-                </li>
-                <li>
-                  Wind: <span>{weatherData.wind}</span> km/h
-                </li>
-              </ul>
-            </div>
+            </form>
+            <WeatherInformation data={weatherData} />
+            <hr />
           </div>
-          <hr />
         </div>
       </div>
-    </div>
-  );
+    );
+  } else {
+    search();
+    return "Loading ...";
+  }
 }
