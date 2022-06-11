@@ -1,5 +1,6 @@
 import React from "react";
 import "./Weather.css";
+import Search from "./Search";
 
 export default function Weather() {
   let weatherData = {
@@ -16,6 +17,7 @@ export default function Weather() {
     <div className="container">
       <div className="weather-wrapper">
         <div className="Weather">
+          <Search />
           <div className="overview">
             <h1>{weatherData.city}</h1>
             <ul>
