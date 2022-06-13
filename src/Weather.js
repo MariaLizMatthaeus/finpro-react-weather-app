@@ -4,6 +4,7 @@ import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { solid } from "@fortawesome/fontawesome-svg-core/import.macro";
 import WeatherInformation from "./WeatherInformation";
+import WeatherForecast from "./WeatherForecast";
 import { SpinnerCircular } from "spinners-react";
 
 export default function Weather(props) {
@@ -86,7 +87,7 @@ export default function Weather(props) {
               </div>
             </form>
             <WeatherInformation data={weatherData} />
-            <hr />
+            <hr /> <WeatherForecast coordinates={weatherData.coordinates} />
           </div>
         </div>
       </div>
