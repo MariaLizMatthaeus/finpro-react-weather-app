@@ -10,6 +10,7 @@ import { SpinnerCircular } from "spinners-react";
 export default function Weather(props) {
   let [weatherData, setWeatherData] = useState({ ready: false });
   let [city, setCity] = useState(props.defaultCity);
+  let [coordinates, setCoordinates] = useState({ ready: false });
 
   function handleResponse(response) {
     setWeatherData({
@@ -27,19 +28,36 @@ export default function Weather(props) {
 
   function handleSubmit(event) {
     event.preventDefault();
-    search();
+    if (city) {
+      axios.get(primaryApiUrl).then(handleResponse);
+    } else {
+      alert("Please search for a city");
+    }
   }
+  let apiKey = `42b8ba4c0d3eac619d09938449fa1571`;
+  let primaryApiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
 
   function handleCityChange(event) {
     setCity(event.target.value);
   }
 
-  function search() {
-    let apiKey = "42b8ba4c0d3eac619d09938449fa1571";
-    let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
-
-    axios.get(apiUrl).then(handleResponse);
+  function locatePosition() {
+    navigator.geolocation.getCurrentPosition(findPosition);
   }
+
+  function findPosition(position) {
+    setCoordinates({
+      ready: true,
+      latitude: position.coords.latitude,
+      longitude: position.coords.longitude,
+    });
+
+    if (coordinates.ready) {
+      axios.get(geolocationUrl).then(handleResponse);
+    }
+  }
+
+  let geolocationUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${coordinates.latitude}&lon=${coordinates.longitude}&appid=${apiKey}&units=metric`;
 
   if (weatherData.ready) {
     return (
@@ -58,11 +76,7 @@ export default function Weather(props) {
                     onChange={handleCityChange}
                   />
                   <span className="input-group-append">
-                    <button
-                      className="btn btn-large"
-                      type="submit"
-                      value={search}
-                    >
+                    <button className="btn btn-large" type="submit">
                       <FontAwesomeIcon
                         icon={solid("search")}
                         inverse
@@ -74,7 +88,7 @@ export default function Weather(props) {
                     <button
                       type="button"
                       className="btn current-location"
-                      value={search}
+                      onClick={locatePosition}
                     >
                       <FontAwesomeIcon
                         icon={solid("map-marked")}
@@ -93,7 +107,8 @@ export default function Weather(props) {
       </div>
     );
   } else {
-    search();
+    let defaultApiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${props.defaultCity}&appid=${apiKey}&units=metric`;
+    axios.get(defaultApiUrl).then(handleResponse);
     return <SpinnerCircular color="white" thickness="100" />;
   }
 }
