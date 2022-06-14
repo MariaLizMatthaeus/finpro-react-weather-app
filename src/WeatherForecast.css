@@ -4,4 +4,8 @@
 .WeatherForecastTempMin {
   opacity: 0.5;
   margin-left: 5px;
+  color: #27296d;
+}
+.WeatherForecastTempMax {
+  color: #9f1861;
 }
