@@ -74,7 +74,7 @@ export default function Weather(props) {
                     <button
                       type="button"
                       className="btn current-location"
-                      id="current-button"
+                      value={search}
                     >
                       <FontAwesomeIcon
                         icon={solid("map-marked")}
