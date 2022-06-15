@@ -63,3 +63,6 @@
 .Weather #description {
   color: #212121;
 }
+.Weather .a {
+  text-decoration: none;
+}
